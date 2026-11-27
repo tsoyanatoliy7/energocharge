@@ -846,6 +846,21 @@ body[data-v="b"] .notes li b{color:var(--mal-deep)}
   .drag-hint{display:none}
 }
 @media (max-width:380px){.ins__panel .tab svg{display:none}}
+/* phones v2: station gets a clean frame, captions sit above it, tabs never overlap it */
+.tagx b{width:auto;min-width:20px;padding:0 5px;border-radius:999px}
+@media (max-width:760px){
+  .ins{--stg:min(46svh,116vw)}
+  .ins__stage{height:var(--stg);perspective:none}
+  .ins__stage .face{transform-style:flat}
+  .ins__stage .face--front{bottom:12px;height:calc(100% - 64px)}
+  .ins__panel .tabs{top:calc(var(--hdr) + var(--stg))}
+  .ins__stage .plabel,.ins__stage .turn{display:none}
+  .ins__stage .face .tagx,.ins__stage .tag3{left:50%!important;top:-50px!important;margin:0;font-size:13px;padding:8px 13px}
+  .ins__stage .tag3{top:12px!important}
+  .ins__panel .tab{flex:1 1 auto;white-space:nowrap;padding:10px 6px}
+}
+@media (max-width:480px){.ins__panel .tab svg{display:none}}
+@media (max-width:370px){.ins__panel .tab{font-size:11px;padding:10px 4px}}
 
 /* ---------- partners: same dark language as the rest of the site ---------- */
 .pt{background:var(--ink);color:var(--floral);color-scheme:dark;border-radius:0;border-top:1px solid rgb(250 252 240 / .06)}
@@ -83288,7 +83303,8 @@ function createStation3D(stage, face, { photo = 'data:image/webp;base64,UklGRugN
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) { canvas.remove(); return null; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const dprCap = () => Math.min(devicePixelRatio, innerWidth < 760 ? 3 : 2);
+  renderer.setPixelRatio(dprCap());
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
 
@@ -83440,6 +83456,7 @@ function createStation3D(stage, face, { photo = 'data:image/webp;base64,UklGRugN
   function layout() {
     const r = stage.getBoundingClientRect(), f = face.getBoundingClientRect();
     W = r.width; H = r.height;
+    renderer.setPixelRatio(dprCap());
     renderer.setSize(W, H, false);
     camera.aspect = W / H;
     const s = IH / f.height; // world units per css px
