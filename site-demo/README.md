@@ -50,3 +50,18 @@ cd site-demo && npx serve .     # или python3 -m http.server
 - Ссылки на видео (YouTube Shorts), приложения и соцсети заданы прямо в `index.html`. Ссылку на видео 2 «Как закончить зарядку» стоит перепроверить (`e09l-2--gVs`).
 - Раздела «Абонементы / EnerGo Club» в демо пока нет, из меню он убран.
 - Ссылка «политика конфиденциальности» в форме сейчас ведёт на `#`.
+
+### 5. SEO
+Уже в `index.html`:
+- `title` и `meta description` на трёх языках. При смене языка `js/i18n.js` меняет title, description, `og:*` и `canonical`;
+- `canonical` и `hreflang` для ru / uz / en / x-default (сейчас через `?lang=`);
+- Open Graph и Twitter Card с превью `media/og.jpg` (1200×630);
+- разметка schema.org в JSON-LD: `Organization` (контакты, соцсети, поддержка 24/7) и `MobileApplication`;
+- `apple-itunes-app`: Smart App Banner в Safari на iPhone;
+- `robots.txt` и `sitemap.xml` с hreflang.
+
+На проде:
+- поисковики лучше индексируют серверный HTML, поэтому стоит отдавать готовые страницы `/ru/`, `/uz/`, `/en/` со своими title и description. Тогда заменить `?lang=` на эти пути в `hreflang`, `canonical` и `sitemap.xml`;
+- домен везде указан как `https://energocharge.uz/`. Если адрес другой, поменять;
+- подключить Google Search Console и Яндекс Вебмастер, отправить sitemap;
+- на демо-копии (GitHub Pages) стоит `noindex`. В исходниках его нет, так и должно быть.

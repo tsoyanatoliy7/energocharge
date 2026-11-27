@@ -232,6 +232,8 @@
     'Нет доступа к геолокации. Выберите город.': ['Geolokatsiyaga ruxsat yo‘q. Shaharni tanlang.', 'No access to location. Choose a city.'],
     'Это просмотр без анимаций. Откройте файл в Safari или Chrome: «Поделиться» → «Открыть в…» · Open in Safari or Chrome for the full demo': ['Bu animatsiyasiz ko‘rinish. To‘liq demo uchun Safari yoki Chrome’da oching', 'This preview has no animations. Open the file in Safari or Chrome for the full demo'],
     'EnerGo — новый сайт (демо)': ['EnerGo — yangi sayt (demo)', 'EnerGo — new website (demo)'],
+    'EnerGo — зарядные станции для электромобилей в Узбекистане': ['EnerGo — Oʻzbekistonda elektromobillar uchun quvvatlash stansiyalari', 'EnerGo — EV charging stations in Uzbekistan'],
+    'Быстрая зарядка электромобилей EnerGo по всему Узбекистану: карта станций, запуск зарядки в приложении, поддержка 24/7. Станьте партнёром и установите станцию на своём объекте.': ['EnerGo elektromobillarni butun Oʻzbekiston boʻylab tez quvvatlash: stansiyalar xaritasi, ilovada quvvatlashni boshlash, 24/7 yordam. Hamkor boʻling va obyektingizga stansiya oʻrnating.', 'Fast EV charging with EnerGo across Uzbekistan: station map, start charging in the app, 24/7 support. Become a partner and install a station at your site.'],
   };
   const IDX = { uz: 0, en: 1 };
   const city = (c, L) => (D[c] ? D[c][IDX[L]] : c);
@@ -296,11 +298,20 @@
   });
 
   const TITLE = document.title;
+  const DESC = (document.querySelector('meta[name="description"]') || {}).content || '';
   function setLang(L, { save = true } = {}) {
     if (!(L in IDX) && L !== 'ru') L = 'ru';
     lang = L; busy = true;
     document.documentElement.lang = L === 'uz' ? 'uz-Latn' : L;
-    document.title = L === 'ru' ? TITLE : (tr('EnerGo — новый сайт (демо)', L) || TITLE);
+    document.title = L === 'ru' ? TITLE : (tr(TITLE, L) || TITLE);
+    // SEO / share tags follow the language: description, OG, canonical
+    const meta = (sel, attr, v) => { const m = document.querySelector(sel); if (m) m.setAttribute(attr, v); };
+    const tx = (k) => (L === 'ru' ? k : tr(k, L) || k);
+    meta('meta[name="description"]', 'content', tx(DESC)); meta('meta[property="og:description"]', 'content', tx(DESC));
+    meta('meta[property="og:title"]', 'content', document.title);
+    meta('meta[property="og:locale"]', 'content', { ru: 'ru_RU', uz: 'uz_UZ', en: 'en_US' }[L]);
+    const alt = document.querySelector('link[rel="alternate"][hreflang="' + L + '"]');
+    if (alt) meta('link[rel="canonical"]', 'href', alt.href);
     walk(document.body);
     document.querySelectorAll('.lang a').forEach((a) => { const on = a.textContent.trim().toLowerCase() === L; on ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'); });
     mo.takeRecords(); busy = false;
