@@ -20,7 +20,7 @@ cd site-demo && python3 -m http.server 3000
 
 | Путь | Что там |
 |---|---|
-| `site-demo/` | весь сайт: `index.html`, `js/`, `media/`, `brand/`, `robots.txt`, `sitemap.xml` |
+| `site-demo/` | исходники сайта на чистых HTML, CSS и JS, без сборки: `index.html`, `css/site.css`, `js/` (логика, карта, форма, 3D, переводы), `js/vendor/` (three.js, Lenis), `media/`, `brand/`, `tools/` (скрипты демо-сборки и геоданных) |
 | `site-demo/README.md` | что подключить перед продом |
 
 Первый прототип на Next.js (v0.1, не утверждён) убран из `main` и лежит в ветке [`legacy-nextjs`](https://github.com/tsoyanatoliy7/energocharge/tree/legacy-nextjs). Использовать его не нужно.

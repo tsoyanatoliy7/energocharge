@@ -4,7 +4,7 @@
 // станцию к аварийной кнопке на левой боковой панели (положение кнопки — по фото станции на объекте).
 // Мировые единицы = пиксели исходного кадра 940×1024, начало координат в центре кадра на плоскости фасада.
 import * as THREE from 'three';
-import { RoomEnvironment } from './RoomEnvironment.js';
+import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 
 const IW = 940, IH = 1024;
 const fx = (px) => px - IW / 2;
