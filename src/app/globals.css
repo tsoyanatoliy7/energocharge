@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* ---------- Дизайн-токены EnerGo (брендбук, стр. 7–8) ---------- */
+@theme {
+  --color-floral: #fafcf0;   /* Floral White */
+  --color-malachite: #02d866;/* Malachite — основной акцент */
+  --color-ink: #131214;      /* Chinese Black */
+  --color-sky: #98daf7;      /* Non-Photo Blue (в брендбуке RGB указан иначе — используем HEX) */
+
+  /* производные оттенки для интерфейса (не новые фирменные цвета) */
+  --color-malachite-deep: #01a84f;
+  --color-ink-2: #1c1b1e;
+  --color-ink-3: #2a292c;
+  --color-paper: #ffffff;
+  --color-line: rgb(19 18 20 / 0.08);
+  --color-muted: rgb(19 18 20 / 0.6);
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-sweep: sweep 4.5s var(--ease-out-expo) infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  @keyframes sweep {
+    0% { transform: translateX(-120%) skewX(-18deg); }
+    60%, 100% { transform: translateX(220%) skewX(-18deg); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+@layer base {
+  html { color-scheme: light; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--color-floral);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--color-malachite); color: var(--color-ink); }
+  section[id] { scroll-margin-top: 88px; }
+  :focus-visible { outline: 2px solid var(--color-malachite); outline-offset: 3px; border-radius: 8px; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1240px] px-4 sm:px-8; }
+  .eyebrow { @apply inline-flex items-center gap-2 text-[13px] font-medium text-malachite-deep; }
+  .eyebrow::before { content: ""; @apply h-1.5 w-1.5 rounded-full bg-malachite; }
+  .h-section { @apply text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.04] font-semibold tracking-[-0.03em]; }
+  .card { @apply rounded-[28px] border border-line bg-paper; }
+  .btn-primary { @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition duration-300 bg-malachite text-ink hover:bg-ink hover:text-floral; }
+  .btn-dark { @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition duration-300 bg-ink text-floral hover:bg-malachite hover:text-ink; }
+  .btn-ghost { @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition duration-300 border border-white/20 bg-white/5 text-floral backdrop-blur-md hover:bg-white/15; }
+  .demo-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-sky/40 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-ink uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
