@@ -58,7 +58,8 @@ export function createStation3D(stage, face, { photo = 'media/station-real.webp'
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) { canvas.remove(); return null; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const dprCap = () => Math.min(devicePixelRatio, innerWidth < 760 ? 3 : 2);
+  renderer.setPixelRatio(dprCap());
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
 
@@ -209,6 +210,7 @@ export function createStation3D(stage, face, { photo = 'media/station-real.webp'
   function layout() {
     const r = stage.getBoundingClientRect(), f = face.getBoundingClientRect();
     W = r.width; H = r.height;
+    renderer.setPixelRatio(dprCap());
     renderer.setSize(W, H, false);
     camera.aspect = W / H;
     const s = IH / f.height; // world units per css px
